@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "91740126979",
+    "project_id": "hms-rad",
+    "storage_bucket": "hms-rad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91740126979:android:555d23dac81fb83489f336",
+        "android_client_info": {
+          "package_name": "com.radproject.hms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91740126979-1fc2a7g0v96mmq0use5h7n2g0fq4k3d4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq6RdZ2CZh2Gc3gIIyokNAV_PB8dMkHsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91740126979-1fc2a7g0v96mmq0use5h7n2g0fq4k3d4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
