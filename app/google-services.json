@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "91740126979",
+    "firebase_url": "https://hms-rad-default-rtdb.firebaseio.com",
     "project_id": "hms-rad",
     "storage_bucket": "hms-rad.appspot.com"
   },
