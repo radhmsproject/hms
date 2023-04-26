@@ -99,8 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                                 redirectToDashboard(LoginActivity.this);
                                 isProgress(false);
 
-                               // mapUser(mAuth.getUid());
-                                listenForUserChanges(mAuth.getUid());
+                                // mapUser(mAuth.getUid());
+                                listenForUserChanges(mAuth  .getUid());
                                 Log.e(TAG, "onComplete: " + mAuth.getUid());
                                 finish();
                             } else {

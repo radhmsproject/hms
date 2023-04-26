@@ -58,8 +58,6 @@ public class GlobalMethods {
         FirebaseAuth.getInstance().signOut();
         redirectToLogin(activity);
     }
-
-
     //    public static void mapUser(String uid) {
 //        Log.e(TAG, "mapUser");
 //        GlobalVariables.db.collection("Farmer")
@@ -96,10 +94,8 @@ public class GlobalMethods {
                     }
                 });
     }
-
     public interface LocationCallback {
         void onLocationFound(LatLng latLng);
-
         void onLocationNotFound();
     }
 
