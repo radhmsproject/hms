@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".RegisterActivity">
+
+
+    <EditText
+
+        android:id="@+id/username_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bg_edit_text"
+        android:hint="Name"
+        android:minHeight="48dp"
+        android:padding="25dp"
+        android:text="Dudly Sirisena"
+        android:textColor="@android:color/black"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:theme="@style/MyEditTextTheme" />
+
+    <EditText
+        android:id="@+id/mobile_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bg_edit_text"
+        android:hint="Mobile"
+        android:minHeight="48dp"
+        android:padding="25dp"
+        android:text="0777123456"
+        android:textColor="@android:color/black"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:theme="@style/MyEditTextTheme" />
+
+    <EditText
+        android:id="@+id/email_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bg_edit_text"
+        android:hint="Email"
+        android:minHeight="48dp"
+        android:padding="25dp"
+        android:text="dudly@gmail.com"
+        android:textColor="@android:color/black"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:theme="@style/MyEditTextTheme" />
+
+    <EditText
+        android:id="@+id/location_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:hint="Location"
+        android:minHeight="48dp"
+        android:padding="25dp"
+        android:text="Location"
+        android:textColor="@android:color/black"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:theme="@style/MyEditTextTheme" />
+
+    <EditText
+        android:id="@+id/password_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bg_edit_text"
+        android:hint="Password"
+        android:minHeight="48dp"
+        android:padding="25dp"
+        android:text="test123"
+        android:textColor="@android:color/black"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:theme="@style/MyEditTextTheme" />
+
+    <EditText
+        android:id="@+id/confirm_password_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bg_edit_text"
+        android:hint="Confirm Password"
+        android:minHeight="48dp"
+        android:padding="25dp"
+        android:text="test123"
+        android:textColor="@android:color/black"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:theme="@style/MyEditTextTheme" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/register_buttonTV"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+
+            android:background="@drawable/login_button"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Register"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already Registered : "
+            android:textColor="@color/colorGreen" />
+
+        <TextView
+            android:id="@+id/loginClickTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login Here"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

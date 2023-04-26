@@ -1,0 +1,281 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSmokeWhite">
+
+    <LinearLayout
+        android:id="@+id/form_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <!-- Left Side Layout -->
+        <LinearLayout
+            android:background="@drawable/rectangle_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Profile Picture and Update Icon -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:id="@+id/farmer_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Farmer ID: 12345" />
+                <FrameLayout
+                    android:id="@+id/profile_picture_container"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/profile_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/round_image_view"
+                        android:src="@drawable/sampleprofile" />
+
+                    <ImageView
+                        android:id="@+id/upload_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:padding="8dp"
+                        android:src="@drawable/camera_icon" />
+
+                </FrameLayout>
+
+
+            </LinearLayout>
+
+            <!-- Verified Status and QR Image -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/verification_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unverified"
+                    android:textColor="@color/colorRed" />
+
+                <ImageView
+                    android:id="@+id/verified_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/verified_icon"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_farmerQR"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/qr_code" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/name_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_1" />
+
+            <ImageView
+                android:id="@+id/edit_name_IC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:clickable="true"
+                android:onClick="onCurrentLocationSet"
+                android:src="@drawable/edit_icon" />
+        </LinearLayout>
+        <!-- Mobile -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mobile" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/mobile_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_1" />
+
+            <ImageView
+                android:id="@+id/edit_mobile_IC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:clickable="true"
+                android:onClick="onCurrentLocationSet"
+                android:src="@drawable/edit_icon" />
+        </LinearLayout>
+        <!-- Email -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/email_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_1" />
+
+            <ImageView
+                android:id="@+id/edit_email_IC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:clickable="true"
+                android:onClick="onCurrentLocationSet"
+                android:src="@drawable/edit_icon" />
+        </LinearLayout>
+        <!-- Location -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/location_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_1" />
+            <!-- Get Current Location Button -->
+            <ImageView
+                android:id="@+id/edit_location_IC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:clickable="true"
+                android:onClick="onCurrentLocationSet"
+                android:src="@drawable/location_icon" />
+        </LinearLayout>
+        <!-- NIC/Passport Upload -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NIC/Passport" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/nic_passport_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_1"
+                android:enabled="false" />
+
+            <ImageView
+                android:id="@+id/camera_ic_btn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:clickable="true"
+                android:onClick="onNICPassportUploadClick"
+                android:src="@drawable/camera_icon" />
+        </LinearLayout>
+        <!-- Utility Bill Upload -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Utility Bill" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/utility_bill_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_1"
+                android:enabled="false" />
+
+            <ImageView
+                android:id="@+id/camera_ic_btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:clickable="true"
+                android:onClick="onUtilityBillUploadClick"
+                android:src="@drawable/camera_icon" />
+        </LinearLayout>
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/updateFarmer_BTN"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:text="Update" />
+
+        <Button
+            android:id="@+id/logoutFarmer_BTN"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:text="Logout" />
+    </LinearLayout>
+
+
+</ScrollView>
