@@ -109,27 +109,7 @@ public class FarmManageActivity extends AppCompatActivity {
         String numOfPerchStr = etNumOfPerch.getText().toString();
         String location = etLocation.getText().toString();
         // Validate that all required fields are filled out
-        if (farmId.isEmpty()) {
-            etFarmId.setError("Farm ID is required");
-            etFarmId.requestFocus();
-            return;
-        }
-        if (name.isEmpty()) {
-            etName.setError("Farm name is required");
-            etName.requestFocus();
-            return;
-        }
-        if (numOfPerchStr.isEmpty()) {
-            etNumOfPerch.setError("Number of perch is required");
-            etNumOfPerch.requestFocus();
-            return;
-        }
-        int numOfPerch = Integer.parseInt(numOfPerchStr);
-        if (location.isEmpty()) {
-            etLocation.setError("Set A Location");
-            etLocation.requestFocus();
-            return;
-        }
+
         // Create a new FarmModel object with the form data
         FarmModel farm = new FarmModel(farmId, name, numOfPerch, location, 0.0, 0.0);
         // Add the new farm to Firebase
