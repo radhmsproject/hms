@@ -114,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity implements GlobalMethods
             // Register the user with Firebase Authentication using the email and password
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
                 // Create a new UserModel instance with the input values and the user ID
-                UserModel userModel = new UserModel(userId, username, mobile, email, location, lat, lng, false, false, false);
+                UserModel userModel = new UserModel(userId, username, mobile, email, location, 0.0, 0.0, false, false, false);
 
                 // Save the UserModel instance to the Firestore database
                 db.collection("Farmer").document(authResult.getUser().getUid()).set(userModel).addOnSuccessListener(aVoid -> {

@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 import static com.radproject.hms.global.GlobalVariables.currentUser;
 import static com.radproject.hms.global.GlobalVariables.db;
 import static com.radproject.hms.global.GlobalVariables.mAuth;
+import static com.radproject.hms.global.GlobalVariables.uid;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,15 +80,16 @@ public class FarmManageActivity extends AppCompatActivity {
     private void generateFarmID() {
         // Get the current farmer ID (e.g. FAM01)
         String farmerId = currentUser.getUserId();
-        CollectionReference farmsRef = db.collection("Farms");
-        Query query = farmsRef.whereEqualTo("farmerId", farmerId);
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        CollectionReference farmsRef = db.collection("Farmer").document(mAuth.getUid()).collection("Farms");
+
+        farmsRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 // Get the number of farms for this farmer
                 int numOfFarms = queryDocumentSnapshots.size();
                 // Customize the farm ID using the farmer ID and number of farms
-                String farmId = farmerId + "FARM" + String.format("%02d", numOfFarms + 1);
+                String farmId = farmerId + "FARM" + String.format("%02d", Integer.valueOf(numOfFarms) + 1);
+                Log.e(TAG, "onSuccess: " + numOfFarms);
                 // Set the farm ID EditText field to the customized value
                 etFarmId.setText(farmId);
             }
@@ -99,6 +101,7 @@ public class FarmManageActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     private void addNewFarmToFirebase() {
