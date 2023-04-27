@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,11 +82,10 @@ public class FarmFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), FarmManageActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("key1", "Add New Farm");
-                bundle.putInt("key2", 0);
+                bundle.putInt("key1", 0);
+                bundle.putString("key2", "Add New Farm");
                 intent.putExtras(bundle);
                 startActivity(intent);
-
             }
         });
 

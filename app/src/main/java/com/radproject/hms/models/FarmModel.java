@@ -1,6 +1,8 @@
 package com.radproject.hms.models;
 
-public class FarmModel {
+import java.io.Serializable;
+
+public class FarmModel implements Serializable {
     private String farmId;
     private String name;
     private int numOfPerch;
@@ -17,6 +19,10 @@ public class FarmModel {
         Location = location;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    public FarmModel() {
+
     }
 
     public String getFarmId() {
