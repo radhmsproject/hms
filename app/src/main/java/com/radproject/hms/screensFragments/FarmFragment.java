@@ -1,5 +1,9 @@
 package com.radproject.hms.screensFragments;
 
+import static android.content.ContentValues.TAG;
+import static com.radproject.hms.global.GlobalVariables.db;
+import static com.radproject.hms.global.GlobalVariables.mAuth;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,10 +11,17 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.radproject.hms.R;
 import com.radproject.hms.listAdapters.FarmListAdapter;
 import com.radproject.hms.models.FarmModel;
@@ -34,8 +45,9 @@ import java.util.List;
 
 public class FarmFragment extends Fragment {
 
-    private FarmModel[] mItemList = new FarmModel[1];
+    private FarmModel[] mFarmList = new FarmModel[0];
     private FarmListAdapter mAdapter;
+    RecyclerView recyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,13 +103,37 @@ public class FarmFragment extends Fragment {
 
 
         // Set up recycler view
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
+        recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new FarmListAdapter(mItemList);
+        mAdapter = new FarmListAdapter(mFarmList);
         recyclerView.setAdapter(mAdapter);
-
+        getFarmListFromFirebase();
         return rootView;
     }
 
+    private void getFarmListFromFirebase() {
+        // Initialize list of farms
+        db.collection("Farmer").document(mAuth.getUid()).collection("Farms")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Error getting farms: " + e.getMessage());
+                            return;
+                        }
+
+                        List<FarmModel> farmList = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            FarmModel farm = documentSnapshot.toObject(FarmModel.class);
+                            farmList.add(farm);
+                        }
+                        mFarmList = farmList.toArray(new FarmModel[0]);
+                        Log.e(TAG, "No of Farms - " + mFarmList.length);
+
+                        mAdapter = new FarmListAdapter(mFarmList);
+                        recyclerView.setAdapter(mAdapter);
+                    }
+                });
+    }
 
 }
