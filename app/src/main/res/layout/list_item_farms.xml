@@ -66,7 +66,7 @@
                 android:id="@+id/FarmNoTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Model No: "
+                android:text="001"
                 android:textColor="@color/black"
                 android:textSize="10dp" />
 
@@ -88,7 +88,7 @@
                 android:id="@+id/FarmSizeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Serial No: "
+                android:text="20"
                 android:textColor="@color/black"
                 android:textSize="10dp" />
 

@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import static com.radproject.hms.global.GlobalMethods.getCurrentLocation;
 import static com.radproject.hms.global.GlobalMethods.getDistrictName;
+import static com.radproject.hms.global.GlobalVariables.db;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -94,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity implements GlobalMethods
 
 
         // Get the last user ID from Firestore and increment it for the new user
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Farmer").orderBy("userId", Query.Direction.DESCENDING).limit(1).get().addOnSuccessListener(queryDocumentSnapshots -> {
             int lastUserId = 0;
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {

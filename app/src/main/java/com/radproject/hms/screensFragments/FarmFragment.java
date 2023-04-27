@@ -1,5 +1,6 @@
 package com.radproject.hms.screensFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import com.radproject.hms.R;
 import com.radproject.hms.listAdapters.FarmListAdapter;
 import com.radproject.hms.models.FarmModel;
+import com.radproject.hms.subActivities.FarmManageActivity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -39,7 +41,7 @@ public class FarmFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Initialize list of items
-      //  mItemList = null;
+        //  mItemList = null;
 
     }
 
@@ -50,6 +52,7 @@ public class FarmFragment extends Fragment {
 
         // Set up search bar
         SearchView searchView = rootView.findViewById(R.id.search_view);
+        Button add_new_button = rootView.findViewById(R.id.add_new_button);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -73,6 +76,20 @@ public class FarmFragment extends Fragment {
             }
         });
 
+        add_new_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FarmManageActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("key1", "Add New Farm");
+                bundle.putInt("key2", 0);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+        });
+
+
         // Set up recycler view
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -81,9 +98,6 @@ public class FarmFragment extends Fragment {
 
         return rootView;
     }
-
-
-
 
 
 }
