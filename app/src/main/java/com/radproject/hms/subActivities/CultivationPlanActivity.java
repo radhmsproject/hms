@@ -93,7 +93,8 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 CropModel selectedCrop = (CropModel) parent.getSelectedItem();
                 // Handle the selected crop
-                // ...
+                // Set the selected item programmatically
+                cropSpinner.setSelection(position);
             }
 
             @Override
