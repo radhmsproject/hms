@@ -3,6 +3,7 @@ package com.radproject.hms.global;
 import static android.content.ContentValues.TAG;
 
 import static com.radproject.hms.global.GlobalVariables.db;
+import static com.radproject.hms.global.GlobalVariables.mAuth;
 
 import android.Manifest;
 import android.app.Activity;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
@@ -34,12 +36,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.radproject.hms.LoginActivity;
 import com.radproject.hms.MainActivity;
 import com.radproject.hms.RegisterActivity;
 import com.radproject.hms.models.CropModel;
+import com.radproject.hms.models.FarmModel;
 import com.radproject.hms.models.UserModel;
 
 import java.io.IOException;
@@ -221,6 +226,28 @@ public class GlobalMethods {
             }
         });
         return cropsList;
+    }
+
+    public static List<FarmModel> getALlFarmList() {
+        List<FarmModel> farmList = new ArrayList<>();
+        // Initialize list of farms
+        db.collection("Farmer").document(mAuth.getUid()).collection("Farms")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Error getting farms: " + e.getMessage());
+                            return;
+                        }
+
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            FarmModel farm = documentSnapshot.toObject(FarmModel.class);
+                            farmList.add(farm);
+                        }
+                    }
+                });
+
+        return farmList;
     }
 
 
