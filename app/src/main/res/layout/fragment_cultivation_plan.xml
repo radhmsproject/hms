@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".screensFragments.CultivationPlanFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Cultivation Plans" />
+        android:layout_height="wrap_content"
 
-</FrameLayout>
+        android:orientation="horizontal">
+        <!-- Search bar -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/cultivationF_SV"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edit_text"
+            android:baselineAligned="false"
+            android:paddingStart="10dp" />
+
+        <!-- Add new button -->
+        <Button
+            android:id="@+id/cultivationF_addNew_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:text="Add New +" />
+    </LinearLayout>
+    <!-- Recycler view for list items -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cultivationF_RV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
