@@ -4,6 +4,8 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,11 +13,13 @@ import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,6 +35,7 @@ import com.radproject.hms.RegisterActivity;
 import com.radproject.hms.models.UserModel;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,6 +63,7 @@ public class GlobalMethods {
         FirebaseAuth.getInstance().signOut();
         redirectToLogin(activity);
     }
+
     //    public static void mapUser(String uid) {
 //        Log.e(TAG, "mapUser");
 //        GlobalVariables.db.collection("Farmer")
@@ -94,8 +100,10 @@ public class GlobalMethods {
                     }
                 });
     }
+
     public interface LocationCallback {
         void onLocationFound(LatLng latLng);
+
         void onLocationNotFound();
     }
 
@@ -155,5 +163,34 @@ public class GlobalMethods {
         Bitmap selectedImage = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
 
         return selectedImage;
+    }
+
+
+    public static class DatePickerFragment extends DialogFragment {
+        String date = "";
+        private String TAG = "DatePickerFragment";
+
+        @Override
+        public void onDetach() {
+            Log.e("TAG", "onDetach: " + date);
+            super.onDetach();
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            month = month + 1;
+            Log.e(TAG, "onCreateDialog: " + month);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            // Create a new instance of DatePickerDialog and return it
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), (DatePickerDialog.OnDateSetListener) getActivity(), year, month, day);
+            //   datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            return datePickerDialog;
+        }
+
     }
 }
