@@ -53,10 +53,21 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
 
         initViews();
         initClicks();
-        loadSpinner();
+
+
+        initCropSpinner();
+        initStatusSpinner();
     }
 
-    private void loadSpinner() {
+    private void initStatusSpinner() {
+        String[] statusItems = {"Complete", "Active", "Pending"};
+        // Create an adapter for the spinner
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusItems);
+        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Set the adapter to the statusSpinner
+        statusSpinner.setAdapter(statusAdapter);
+    }
+    private void initCropSpinner() {
         ArrayList<CropModel> crop_list = getAllCrops();
 
         // Create an adapter for the spinner
