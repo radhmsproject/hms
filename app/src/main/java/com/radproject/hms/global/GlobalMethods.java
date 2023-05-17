@@ -2,6 +2,8 @@ package com.radproject.hms.global;
 
 import static android.content.ContentValues.TAG;
 
+import static com.radproject.hms.global.GlobalVariables.db;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -18,23 +20,30 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.radproject.hms.LoginActivity;
 import com.radproject.hms.MainActivity;
 import com.radproject.hms.RegisterActivity;
+import com.radproject.hms.models.CropModel;
 import com.radproject.hms.models.UserModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -85,7 +94,7 @@ public class GlobalMethods {
 //    }
     public static void listenForUserChanges(String uid) {
         Log.e(TAG, "listenForUserChanges");
-        GlobalVariables.db.collection("Farmer")
+        db.collection("Farmer")
                 .document(uid)
                 .addSnapshotListener((document, error) -> {
                     if (error != null) {
@@ -103,7 +112,6 @@ public class GlobalMethods {
 
     public interface LocationCallback {
         void onLocationFound(LatLng latLng);
-
         void onLocationNotFound();
     }
 
@@ -164,8 +172,6 @@ public class GlobalMethods {
 
         return selectedImage;
     }
-
-
     public static class DatePickerFragment extends DialogFragment {
         String date = "";
         private String TAG = "DatePickerFragment";
@@ -193,4 +199,29 @@ public class GlobalMethods {
         }
 
     }
+
+
+    // Firebase Operations
+    public static ArrayList<CropModel> getAllCrops() {
+        CollectionReference cropsRef = db.collection("cultivation_crops");
+
+        ArrayList<CropModel> cropsList = new ArrayList<>();
+
+        cropsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        CropModel cropModel = document.toObject(CropModel.class);
+                        cropsList.add(cropModel);
+                    }
+                } else {
+                    Log.e("Firestore", "Error getting crops: " + task.getException());
+                }
+            }
+        });
+        return cropsList;
+    }
+
+
 }

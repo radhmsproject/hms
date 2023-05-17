@@ -2,6 +2,8 @@ package com.radproject.hms.subActivities;
 
 import static android.content.ContentValues.TAG;
 
+import static com.radproject.hms.global.GlobalMethods.getAllCrops;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +12,9 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,6 +25,9 @@ import android.widget.TextView;
 
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalMethods;
+import com.radproject.hms.models.CropModel;
+
+import java.util.ArrayList;
 
 public class CultivationPlanActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private ImageButton backButton;
@@ -45,8 +53,56 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
 
         initViews();
         initClicks();
+        loadSpinner();
     }
 
+    private void loadSpinner() {
+        ArrayList<CropModel> crop_list = getAllCrops();
+
+        // Create an adapter for the spinner
+        ArrayAdapter<CropModel> adapter = new ArrayAdapter<CropModel>(this, android.R.layout.simple_spinner_item, crop_list) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView textView = (TextView) super.getView(position, convertView, parent);
+                CropModel crop = getItem(position);
+                if (crop != null) {
+                    textView.setText(crop.getCrop_name());
+                }
+                return textView;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
+                CropModel crop = getItem(position);
+                if (crop != null) {
+                    textView.setText(crop.getCrop_name());
+                }
+                return textView;
+            }
+        };
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set the adapter to the cropSpinner
+        cropSpinner.setAdapter(adapter);
+
+        // Set the item selection listener
+        cropSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CropModel selectedCrop = (CropModel) parent.getSelectedItem();
+                // Handle the selected crop
+                // ...
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle the case when nothing is selected
+                // ...
+            }
+        });
+    }
 
     private void initViews() {
         backButton = findViewById(R.id.cul1_back_btn);
@@ -86,6 +142,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
             }
         });
     }
+
     private boolean isStartDate;
 
     private void showDatePickerDialog() {
@@ -102,10 +159,10 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         // Update the respective TextView with the selected date
         if (isStartDate) {
             startDateTextView.setText(year + "-" + _month + "-" + _day);
-            Log.e(TAG, "start: "+year + "-" + _month + "-" + _day);
+            Log.e(TAG, "start: " + year + "-" + _month + "-" + _day);
         } else {
             endDateTextView.setText(year + "-" + _month + "-" + _day);
-            Log.e(TAG, "end: "+year + "-" + _month + "-" + _day);
+            Log.e(TAG, "end: " + year + "-" + _month + "-" + _day);
         }
     }
 }
