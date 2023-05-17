@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
         // String email = mEmailField.getText().toString();
-        //    String password = mPasswordField.getText().toString();
+        // String password = mPasswordField.getText().toString();
         String email = "dudly@gmail.com";
         String password = "test123";
         isProgress(true);
