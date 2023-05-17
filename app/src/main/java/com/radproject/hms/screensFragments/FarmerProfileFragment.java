@@ -78,7 +78,7 @@ public class FarmerProfileFragment extends Fragment implements View.OnClickListe
 
         // Initialize verification status TextView
 
-        farmer_id.setText(GlobalVariables.currentUser.getUserId());
+        farmer_id.setText(GlobalVariables.currentUser.getUserId()+"");
         nameEditText.setText(GlobalVariables.currentUser.getUsername());
         mobileEditText.setText(GlobalVariables.currentUser.getMobile());
         emailEditText.setText(GlobalVariables.currentUser.getEmail());

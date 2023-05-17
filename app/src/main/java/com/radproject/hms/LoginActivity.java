@@ -59,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
         initClickEvents();
 
         if (mAuth.getCurrentUser() != null) {
-
             redirectToDashboard(LoginActivity.this);
         }
     }
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         // String email = mEmailField.getText().toString();
         //    String password = mPasswordField.getText().toString();
-        String email = "test1@124.com";
+        String email = "dudly@gmail.com";
         String password = "test123";
         isProgress(true);
 

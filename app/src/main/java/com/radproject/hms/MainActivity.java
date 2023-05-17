@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.radproject.hms.screensFragments.ActivityPlansFragment;
 import com.radproject.hms.screensFragments.CultivationPlanFragment;
 import com.radproject.hms.screensFragments.DashboardFragment;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
 
         // Initialize Bottom Navigation View
@@ -46,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
                 new DashboardFragment()).commit();
         Log.e(TAG, "onCreate: " + mAuth.getUid());
         if (mAuth.getUid() == null) {
+            Log.e(TAG, "onCreate: " + mAuth.getUid());
             redirectToLogin(MainActivity.this);
         } else {
             listenForUserChanges(mAuth.getUid());
         }
-
     }
 
 

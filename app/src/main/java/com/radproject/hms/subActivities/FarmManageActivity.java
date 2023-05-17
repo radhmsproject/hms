@@ -103,7 +103,6 @@ public class FarmManageActivity extends AppCompatActivity {
     }
 
 
-
     private void addNewFarmToFirebase() {
         // Create a new FarmModel object with the form data
         // Get the form data
@@ -144,6 +143,7 @@ public class FarmManageActivity extends AppCompatActivity {
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "New farm added with ID: " + documentReference.getId());
                         // Handle the successful addition of the farm
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
