@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/login_bk"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".RegisterActivity">
@@ -23,7 +23,7 @@
         android:text="Dudly Sirisena"
         android:textColor="@android:color/black"
         android:textColorHint="#999999"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:theme="@style/MyEditTextTheme" />
 
     <EditText
@@ -38,7 +38,7 @@
         android:text="0777123456"
         android:textColor="@android:color/black"
         android:textColorHint="#999999"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:theme="@style/MyEditTextTheme" />
 
     <EditText
@@ -53,7 +53,7 @@
         android:text="dudly@gmail.com"
         android:textColor="@android:color/black"
         android:textColorHint="#999999"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:theme="@style/MyEditTextTheme" />
 
     <EditText
@@ -67,7 +67,7 @@
         android:text="Location"
         android:textColor="@android:color/black"
         android:textColorHint="#999999"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:theme="@style/MyEditTextTheme" />
 
     <EditText
@@ -83,7 +83,7 @@
         android:inputType="textPassword"
         android:textColor="@android:color/black"
         android:textColorHint="#999999"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:theme="@style/MyEditTextTheme" />
 
     <EditText
@@ -99,7 +99,7 @@
         android:inputType="textPassword"
         android:textColor="@android:color/black"
         android:textColorHint="#999999"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:theme="@style/MyEditTextTheme" />
 
 
