@@ -45,6 +45,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
     private EditText planNameEditText;
     private Spinner statusSpinner;
     private Button createPlanButton;
+    private ArrayList<CropModel> crop_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,8 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
     }
 
     private void initCropSpinner() {
-        ArrayList<CropModel> crop_list = getAllCrops();
+        crop_list = getAllCrops();
+
         // Create an adapter for the spinner
         ArrayAdapter<CropModel> adapter = new ArrayAdapter<CropModel>(this, android.R.layout.simple_spinner_item, crop_list) {
             @Override
@@ -99,7 +101,11 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Set the adapter to the cropSpinner
-        cropSpinner.setAdapter(adapter);
+//        cropSpinner.setAdapter(adapter);
+        String[] names = { "", "Lettuce","Carrot","Spinach", "Cabbage", "Radish", "Tomato" };
+        ArrayAdapter<String> adapterNew;
+        adapterNew = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, names);
+        cropSpinner.setAdapter(adapterNew);
     }
 
     private AutoFarmSuggestAdapter autoFarmSuggestAdapter;
@@ -154,15 +160,26 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         cropSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CropModel selectedCrop = (CropModel) parent.getItemAtPosition(position);
-                // Handle the selected crop
-                Log.e(TAG, "onItemSelected: " + selectedCrop.getCrop_name());
-                // Do not set the selection programmatically again
+                String selectedCropName = (String) parent.getItemAtPosition(position);
+                CropModel selectedCrop = null;
+
+                if (selectedCropName.length() > 0) {
+                    for (CropModel crop: crop_list
+                    ) {
+                        String cropName = crop.getCrop_name();
+                        if (cropName.equals(selectedCropName)) {
+                            selectedCrop = crop;
+                            break;
+                        }
+                    }
+                }
+                if (selectedCrop != null) {
+                    Log.w("HMS_Print", "Selected Item: " + selectedCrop.getCrop_name());
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Handle the case when nothing is selected
-                Log.e(TAG, "onNothingSelected: ");
+                Log.w("HMS_Print", "onNothingSelected...");
             }
         });
 
