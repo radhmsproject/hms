@@ -1,6 +1,8 @@
 package com.radproject.hms.models;
 
-public class CropModel {
+import java.io.Serializable;
+
+public class CropModel implements Serializable {
     String crop_name;
     int crop_number;
     int estimate_days;
@@ -37,5 +39,12 @@ public class CropModel {
 
     public void setEstimate_days(int estimate_days) {
         this.estimate_days = estimate_days;
+    }
+
+    @Override
+    public String toString() {
+        return "CropModel{" +
+                "crop_name='" + crop_name + '\'' +
+                '}';
     }
 }

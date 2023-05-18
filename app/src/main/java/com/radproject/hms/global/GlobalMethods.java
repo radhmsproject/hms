@@ -228,8 +228,8 @@ public class GlobalMethods {
         return cropsList;
     }
 
-    public static List<FarmModel> getALlFarmList() {
-        List<FarmModel> farmList = new ArrayList<>();
+    public static ArrayList<FarmModel> getALlFarmList() {
+        ArrayList<FarmModel> farmList = new ArrayList<>();
         // Initialize list of farms
         db.collection("Farmer").document(mAuth.getUid()).collection("Farms")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {

@@ -11,6 +11,22 @@ public class FarmModel implements Serializable {
     private double longitude;
     private double latitude;
 
+    @Override
+    public String toString() {
+        return name; // Return the farm name instead of the complete FarmModel object
+    }
+
+//    @Override
+//    public String toString() {
+//        return "FarmModel{" +
+//                "farmId='" + farmId + '\'' +
+//                ", name='" + name + '\'' +
+//                ", numOfPerch=" + numOfPerch +
+//                ", Location='" + Location + '\'' +
+//                ", longitude=" + longitude +
+//                ", latitude=" + latitude +
+//                '}';
+//    }
 
     public FarmModel(String farmId, String name, int numOfPerch, String location, double longitude, double latitude) {
         this.farmId = farmId;
