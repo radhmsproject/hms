@@ -6,14 +6,11 @@ import static com.radproject.hms.global.GlobalMethods.getALlFarmList;
 import static com.radproject.hms.global.GlobalMethods.getAllCrops;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +31,6 @@ import com.radproject.hms.models.CropModel;
 import com.radproject.hms.models.FarmModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CultivationPlanActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private ImageButton backButton;
@@ -118,7 +114,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         backButton = findViewById(R.id.cul1_back_btn);
         navbarTextView = findViewById(R.id.cul1_navbar_TV);
         cropSpinner = findViewById(R.id.cul1_Crop_Spinner);
-        farmAutoCompleteTextView = findViewById(R.id.farm_auto_complete_text_view);
+        farmAutoCompleteTextView = findViewById(R.id.farm_auto_completeTV);
         costingItemsRecyclerView = findViewById(R.id.costing_items_list_RV);
         startDateTextView = findViewById(R.id.start_date_tv);
         startDateButton = findViewById(R.id.start_select_calender_IB);
@@ -128,12 +124,16 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         statusSpinner = findViewById(R.id.cul1_status);
         createPlanButton = findViewById(R.id.cul1_add_btn);
 
+        loadALLFarms();
 
-        farmAutoCompleteTextView = findViewById(R.id.farm_auto_complete_text_view);
+    }
+
+    private void loadALLFarms() {
         farmAutoCompleteTextView.setThreshold(1); // Set the minimum number of characters to trigger filtering
-        autoFarmSuggestAdapter = new AutoFarmSuggestAdapter(this,  getALlFarmList());
+        autoFarmSuggestAdapter = new AutoFarmSuggestAdapter(this, getALlFarmList());
+        autoFarmSuggestAdapter.setNotifyOnChange(false);
         farmAutoCompleteTextView.setAdapter(autoFarmSuggestAdapter);
-
+        autoFarmSuggestAdapter.notifyDataSetChanged();
     }
 
     private void initClicks() {
@@ -177,48 +177,28 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
                     Log.w("HMS_Print", "Selected Item: " + selectedCrop.getCrop_name());
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.w("HMS_Print", "onNothingSelected...");
             }
         });
 
-        farmAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
+        farmAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Not needed for your case, but required by the TextWatcher interface
-            }
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                FarmModel farm = (FarmModel) adapterView.getItemAtPosition(position);
+                farmAutoCompleteTextView.setText(farm.getName());
+                farmAutoCompleteTextView.setSelection(farmAutoCompleteTextView.getText().length());
+                Log.e(TAG, "onItemClick: " + farm.getName());
+                Log.e(TAG, "onItemClick: " + farm.getFarmId());
+                Log.e(TAG, "onItemClick: " + farm.getFarmId());
+                // locationCodeTV.setText(farm.getUserLocationCode());
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterFarmData(s.toString());
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // Not needed for your case, but required by the TextWatcher interface
+                // Dismiss the dropdown after item selection
+                farmAutoCompleteTextView.dismissDropDown();
             }
         });
 
-    }
-
-    private void filterFarmData(String query) {
-        List<FarmModel> filteredList = getFilteredFarmData(query);
-
-
-    }
-
-    private List<FarmModel> getFilteredFarmData(String query) {
-        List<FarmModel> filteredList = new ArrayList<>();
-        for (FarmModel farm : getALlFarmList()) {
-            if (farm.getName().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(farm);
-                Log.e(TAG, "getFilteredFarmData: " + farm);
-            }
-        }
-        return filteredList;
     }
 
     private boolean isStartDate;

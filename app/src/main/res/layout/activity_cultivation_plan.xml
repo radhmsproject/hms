@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_background"
                 android:paddingHorizontal="18dp" />
+
             <!-- Add other input fields for numOfPerch, location, longitude, and latitude -->
             <TextView
                 android:layout_width="match_parent"
@@ -88,7 +89,7 @@
                 android:text="Add Farms" />
 
             <AutoCompleteTextView
-                android:id="@+id/farm_auto_complete_text_view"
+                android:id="@+id/farm_auto_completeTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_search_et"
@@ -269,6 +270,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/spinner_background"
                     android:paddingHorizontal="18dp" />
+
             </LinearLayout>
 
             <Button
