@@ -1,8 +1,9 @@
 package com.radproject.hms.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CultivationPlanModel {
+public class CultivationPlanModel implements Serializable {
 
     String Cultivation_ID;
     String Cultivation_CROP_ID;
