@@ -78,9 +78,9 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
 
     private void initCropSpinner() {
 
-        Log.e(TAG, "initCropSpinner: " + GlobalVariables.crop_list);
+        Log.e(TAG, "initCropSpinner: " + GlobalVariables.all_crop_list);
         // Create an adapter for the spinner
-        ArrayAdapter<CropModel> adapter = new ArrayAdapter<CropModel>(this, android.R.layout.simple_spinner_item, GlobalVariables.crop_list) {
+        ArrayAdapter<CropModel> adapter = new ArrayAdapter<CropModel>(this, android.R.layout.simple_spinner_item, GlobalVariables.all_crop_list) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
@@ -114,7 +114,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
     }
 
     private AutoFarmSuggestAdapter autoFarmSuggestAdapter;
-    ArrayList<FarmModel> AllFarm = GlobalVariables.get_farmList;
+    ArrayList<FarmModel> AllFarm = GlobalVariables.all_farm_list;
     ArrayList<FarmModel> addedFarms = new ArrayList<>();
 
     private void initViews() {

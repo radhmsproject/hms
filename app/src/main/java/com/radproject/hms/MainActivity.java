@@ -1,13 +1,13 @@
 package com.radproject.hms;
 
 import static android.content.ContentValues.TAG;
-
 import static com.radproject.hms.global.GlobalMethods.getALlFarmList;
 import static com.radproject.hms.global.GlobalMethods.listenForUserChanges;
 import static com.radproject.hms.global.GlobalMethods.redirectToLogin;
 import static com.radproject.hms.global.GlobalVariables.mAuth;
 import static com.radproject.hms.global.GlobalVariables.uid;
 import static com.radproject.hms.global.PublicFirebaseMethods.getAllCrops;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,11 +22,15 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.radproject.hms.global.GlobalVariables;
+import com.radproject.hms.global.PublicFirebaseMethods;
+import com.radproject.hms.models.CultivationPlanModel;
 import com.radproject.hms.screensFragments.ActivityPlansFragment;
 import com.radproject.hms.screensFragments.CultivationPlanFragment;
 import com.radproject.hms.screensFragments.DashboardFragment;
 import com.radproject.hms.screensFragments.FarmFragment;
 import com.radproject.hms.screensFragments.FarmerProfileFragment;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,8 +64,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        GlobalVariables.crop_list = getAllCrops();
-        GlobalVariables.get_farmList = getALlFarmList();
+        GlobalVariables.all_crop_list = getAllCrops();
+        GlobalVariables.all_farm_list = getALlFarmList();
+
+
     }
 
     // Bottom Navigation View Listener

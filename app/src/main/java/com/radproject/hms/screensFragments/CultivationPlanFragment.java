@@ -1,29 +1,43 @@
 package com.radproject.hms.screensFragments;
 
+import static android.content.ContentValues.TAG;
+import static com.radproject.hms.global.GlobalVariables.db;
+import static com.radproject.hms.global.GlobalVariables.uid;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.radproject.hms.R;
+import com.radproject.hms.global.GlobalVariables;
 import com.radproject.hms.listAdapters.CultivationPlanAdapter;
+import com.radproject.hms.listAdapters.FarmListAdapter;
 import com.radproject.hms.models.CultivationPlanModel;
+import com.radproject.hms.models.FarmModel;
 import com.radproject.hms.subActivities.CultivationPlanActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CultivationPlanFragment extends Fragment {
 
     private Button addNewButton;
-    private RecyclerView cultivationRecyclerView;
-    private CultivationPlanAdapter cultivationAdapter;
-    private ArrayList<CultivationPlanModel> cultivationPlanList;
+    private static RecyclerView cultivationRecyclerView;
+    private static CultivationPlanAdapter cultivationAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +47,7 @@ public class CultivationPlanFragment extends Fragment {
         setupRecyclerView();
         return view;
     }
+
 
     private void initViews(View view) {
         addNewButton = view.findViewById(R.id.cultivationF_addNew_btn);
@@ -51,31 +66,36 @@ public class CultivationPlanFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        cultivationPlanList = new ArrayList<>(); // Initialize your list of cultivation plans
 
-        // Create dummy data (replace with your actual data)
-        CultivationPlanModel cultivationPlan1 = new CultivationPlanModel();
-        cultivationPlan1.setCultivation_Plan_name("Plan 1");
-        cultivationPlan1.setCultivation_CROP_ID("Crop 1");
-        cultivationPlan1.setCultivation_Start_date("2023-05-19");
-        cultivationPlan1.setCultivation_End_date("2023-06-19");
-        cultivationPlan1.setStatus("Active");
-        cultivationPlanList.add(cultivationPlan1);
-
-        CultivationPlanModel cultivationPlan2 = new CultivationPlanModel();
-        cultivationPlan2.setCultivation_Plan_name("Plan 2");
-        cultivationPlan2.setCultivation_CROP_ID("Crop 2");
-        cultivationPlan2.setCultivation_Start_date("2023-06-20");
-        cultivationPlan2.setCultivation_End_date("2023-07-20");
-        cultivationPlan2.setStatus("Inactive");
-        cultivationPlanList.add(cultivationPlan2);
-
-        // Create and set the adapter
-        cultivationAdapter = new CultivationPlanAdapter(cultivationPlanList);
+        // Set up recycler view
+        cultivationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        cultivationAdapter = new CultivationPlanAdapter(cultivationList);
         cultivationRecyclerView.setAdapter(cultivationAdapter);
+        getAllCultivationForCurrentFarmer();
 
-        // Set the layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        cultivationRecyclerView.setLayoutManager(layoutManager);
     }
+
+    private static CultivationPlanModel[] cultivationList = new CultivationPlanModel[0];
+
+    public static void getAllCultivationForCurrentFarmer() {
+        db.collection("Farmer").document(uid).collection("cultivation_plan").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error getting farms: " + e.getMessage());
+                    return;
+                }
+                List<CultivationPlanModel> farmList = new ArrayList<>();
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    CultivationPlanModel cultivationPlanModel = documentSnapshot.toObject(CultivationPlanModel.class);
+                    farmList.add(cultivationPlanModel);
+                }
+                cultivationList = farmList.toArray(new CultivationPlanModel[0]);
+                Log.e(TAG, "No of Farms - " + cultivationList.length);
+                cultivationAdapter.notifyDataSetChanged(); // Add this line to refresh the RecyclerView
+            }
+        });
+    }
+
+
 }

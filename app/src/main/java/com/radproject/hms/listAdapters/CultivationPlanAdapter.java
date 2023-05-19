@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.radproject.hms.R;
 import com.radproject.hms.models.CultivationPlanModel;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CultivationPlanAdapter extends RecyclerView.Adapter<CultivationPlanAdapter.ViewHolder> {
 
     private ArrayList<CultivationPlanModel> cultivationPlanList;
 
-    public CultivationPlanAdapter(ArrayList<CultivationPlanModel> cultivationPlanList) {
-        this.cultivationPlanList = cultivationPlanList;
+    public CultivationPlanAdapter(CultivationPlanModel[] cultivationPlanArray) {
+        this.cultivationPlanList = new ArrayList<>(Arrays.asList(cultivationPlanArray));
     }
 
     @NonNull
