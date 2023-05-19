@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,7 +70,7 @@ public class CultivationPlanFragment extends Fragment {
 
         // Set up recycler view
         cultivationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cultivationAdapter = new CultivationPlanAdapter(cultivationList);
+        cultivationAdapter = new CultivationPlanAdapter(cultivationList, getParentFragmentManager());
         cultivationRecyclerView.setAdapter(cultivationAdapter);
         getAllCultivationForCurrentFarmer();
 
