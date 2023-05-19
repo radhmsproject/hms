@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
+            android:name=".subActivities.ActivityPlansActivity"
+            android:exported="false" />
+        <activity
             android:name=".subActivities.CultivationPlanActivity"
             android:exported="false" />
         <activity

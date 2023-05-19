@@ -41,7 +41,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
     private TextView navbarTextView;
     private Spinner cul1_Crop_Spinner;
     private AutoCompleteTextView farmAutoCompleteTextView;
-    private RecyclerView costingItemsRecyclerView;
+    private RecyclerView farmItemsRecyclerView;
     private TextView startDateTextView;
     private ImageButton startDateButton;
     private TextView endDateTextView, cul1_Cul_ID_TV;
@@ -124,7 +124,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         cul1_Crop_Spinner = findViewById(R.id.cul1_Crop_Spinner);
         farmAutoCompleteTextView = findViewById(R.id.farm_auto_complete_text_view);
         farmAutoCompleteTextView.setThreshold(1);
-        costingItemsRecyclerView = findViewById(R.id.costing_items_list_RV);
+        farmItemsRecyclerView = findViewById(R.id.farm_items_list_RV);
         startDateTextView = findViewById(R.id.start_date_tv);
         startDateButton = findViewById(R.id.start_select_calender_IB);
         endDateTextView = findViewById(R.id.end_date_tv);
@@ -233,8 +233,8 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
 
     private void setupTaggedListRV(ArrayList<FarmModel> selectedFarms, ArrayList<FarmModel> AllFarm) {
         selectedFarmAdapter = new SelectedFarmAdapter(selectedFarms, AllFarm, this); // Create the adapter
-        costingItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        costingItemsRecyclerView.setAdapter(selectedFarmAdapter);
+        farmItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        farmItemsRecyclerView.setAdapter(selectedFarmAdapter);
     }
 
     private boolean isStartDate;

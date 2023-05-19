@@ -1,4 +1,5 @@
 package com.radproject.hms.listAdapters;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.radproject.hms.R;
 import com.radproject.hms.models.CultivationPlanModel;
 import com.radproject.hms.screensFragments.ActivityPlansFragment;
+import com.radproject.hms.subActivities.ActivityPlansActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +25,11 @@ import java.util.Arrays;
 public class CultivationPlanAdapter extends RecyclerView.Adapter<CultivationPlanAdapter.ViewHolder> {
 
     private ArrayList<CultivationPlanModel> cultivationPlanList;
-    private FragmentManager fragmentManager;
 
-    public CultivationPlanAdapter(CultivationPlanModel[] cultivationPlanArray, FragmentManager fragmentManager) {
+
+    public CultivationPlanAdapter(CultivationPlanModel[] cultivationPlanArray) {
         this.cultivationPlanList = new ArrayList<>(Arrays.asList(cultivationPlanArray));
-        this.fragmentManager = fragmentManager;
+
     }
 
     @NonNull
@@ -53,12 +55,11 @@ public class CultivationPlanAdapter extends RecyclerView.Adapter<CultivationPlan
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("cultivationPlan", cultivationPlan);
 
-                // Navigate to ActivityPlansFragment and pass the bundle
-                ActivityPlansFragment targetFragment = new ActivityPlansFragment();
-                targetFragment.setArguments(bundle);
+                // Start the ActivityPlanActivity and pass the bundle
+                Intent intent = new Intent(v.getContext(), ActivityPlansActivity.class);
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
 
-                // Replace the current fragment with the target fragment
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, targetFragment).commit();
             }
         });
     }

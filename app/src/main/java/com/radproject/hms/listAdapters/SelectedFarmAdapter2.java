@@ -1,6 +1,7 @@
 package com.radproject.hms.listAdapters;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,21 +19,20 @@ import com.radproject.hms.subActivities.CultivationPlanActivity;
 
 import java.util.ArrayList;
 
-public class SelectedFarmAdapter extends RecyclerView.Adapter<SelectedFarmAdapter.ViewHolder> {
+public class SelectedFarmAdapter2 extends RecyclerView.Adapter<SelectedFarmAdapter2.ViewHolder> {
 
     private ArrayList<FarmModel> AllList;
     private ArrayList<FarmModel> AddedList;
     private int clickedPosition = -1;
-    private CultivationPlanActivity context;
-    ActivityPlansActivity activityPlansActivity;
-    public SelectedFarmAdapter(ArrayList<FarmModel> AllList,
-                               ArrayList<FarmModel> AddedList,
-                               CultivationPlanActivity context) {
-        this.AllList = AllList;
-        this.AddedList = AddedList;
-        this.context = context;
-    }
 
+    ActivityPlansActivity context;
+
+
+    public SelectedFarmAdapter2(ArrayList<FarmModel> addedFarms, ActivityPlansActivity activityPlansActivity) {
+        this.AddedList = addedFarms;
+        this.context = activityPlansActivity;
+        Log.e("TAG", "SelectedFarmAdapter2: "+addedFarms.size() );
+    }
 
     @NonNull
     @Override
@@ -45,12 +45,7 @@ public class SelectedFarmAdapter extends RecyclerView.Adapter<SelectedFarmAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FarmModel farm = AllList.get(position);
         holder.bind(farm);
-        holder.deleteIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                removeItem(farm, position);
-            }
-        });
+        holder.deleteIV.setVisibility(View.GONE);
         holder.selectedFarmLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,12 +72,6 @@ public class SelectedFarmAdapter extends RecyclerView.Adapter<SelectedFarmAdapte
         return AllList.size();
     }
 
-    private void removeItem(FarmModel farm, int position) {
-        AllList.remove(farm);
-        AddedList.add(farm);
-        notifyDataSetChanged();
-        context.updateAdapter();
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView farmIndexTV;

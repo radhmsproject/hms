@@ -70,7 +70,7 @@ public class CultivationPlanFragment extends Fragment {
 
         // Set up recycler view
         cultivationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cultivationAdapter = new CultivationPlanAdapter(cultivationList, getParentFragmentManager());
+        cultivationAdapter = new CultivationPlanAdapter(cultivationList);
         cultivationRecyclerView.setAdapter(cultivationAdapter);
         getAllCultivationForCurrentFarmer();
 
