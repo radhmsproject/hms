@@ -106,9 +106,9 @@ public class ActivityPlansActivity extends AppCompatActivity {
                     }
                 }
 
-                Log.e(TAG, "All Farms : "+AllFarm.size() );
-                SelectedFarmAdapter2 costingItemsAdapter = new SelectedFarmAdapter2(AllFarm, this);
-                farmItemsRecyclerView.setAdapter(costingItemsAdapter);
+                Log.e(TAG, "All Farms : " + AllFarm.size());
+                SelectedFarmAdapter2 farmAdapter = new SelectedFarmAdapter2(AllFarm);
+                farmItemsRecyclerView.setAdapter(farmAdapter);
 
             }
         }

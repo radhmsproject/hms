@@ -28,10 +28,10 @@ public class SelectedFarmAdapter2 extends RecyclerView.Adapter<SelectedFarmAdapt
     ActivityPlansActivity context;
 
 
-    public SelectedFarmAdapter2(ArrayList<FarmModel> addedFarms, ActivityPlansActivity activityPlansActivity) {
+    public SelectedFarmAdapter2(ArrayList<FarmModel> addedFarms) {
         this.AddedList = addedFarms;
-        this.context = activityPlansActivity;
-        Log.e("TAG", "SelectedFarmAdapter2: "+addedFarms.size() );
+
+        Log.e("TAG", "SelectedFarmAdapter2: " + addedFarms.size());
     }
 
     @NonNull
