@@ -3,6 +3,7 @@ package com.radproject.hms.subActivities;
 import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -106,8 +107,10 @@ public class ActivityPlansActivity extends AppCompatActivity {
                     }
                 }
 
-                Log.e(TAG, "All Farms : " + AllFarm.size());
-                SelectedFarmAdapter2 farmAdapter = new SelectedFarmAdapter2(AllFarm);
+                Log.e(TAG, "onCreate: " + addedFarms);
+
+                farmItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                SelectedFarmAdapter2 farmAdapter = new SelectedFarmAdapter2(addedFarms);
                 farmItemsRecyclerView.setAdapter(farmAdapter);
 
             }

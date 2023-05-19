@@ -1,6 +1,7 @@
 package com.radproject.hms.screensFragments;
 
 import static android.content.ContentValues.TAG;
+import static com.radproject.hms.global.GlobalMethods.getALlFarmList;
 import static com.radproject.hms.global.GlobalVariables.db;
 import static com.radproject.hms.global.GlobalVariables.uid;
 
@@ -74,6 +75,12 @@ public class CultivationPlanFragment extends Fragment {
         cultivationRecyclerView.setAdapter(cultivationAdapter);
         getAllCultivationForCurrentFarmer();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        GlobalVariables.all_farm_list = getALlFarmList();
     }
 
     private static CultivationPlanModel[] cultivationList = new CultivationPlanModel[0];

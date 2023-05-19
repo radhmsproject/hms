@@ -1,5 +1,7 @@
 package com.radproject.hms.listAdapters;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,16 +23,14 @@ import java.util.ArrayList;
 
 public class SelectedFarmAdapter2 extends RecyclerView.Adapter<SelectedFarmAdapter2.ViewHolder> {
 
-    private ArrayList<FarmModel> AllList;
+//    private ArrayList<FarmModel> AllList;
     private ArrayList<FarmModel> AddedList;
     private int clickedPosition = -1;
 
-    ActivityPlansActivity context;
-
+//    ActivityPlansActivity context;
 
     public SelectedFarmAdapter2(ArrayList<FarmModel> addedFarms) {
         this.AddedList = addedFarms;
-
         Log.e("TAG", "SelectedFarmAdapter2: " + addedFarms.size());
     }
 
@@ -43,7 +43,8 @@ public class SelectedFarmAdapter2 extends RecyclerView.Adapter<SelectedFarmAdapt
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FarmModel farm = AllList.get(position);
+        FarmModel farm = AddedList.get(position);
+        Log.e(TAG, "RV ADAPTER: "+position );
         holder.bind(farm);
         holder.deleteIV.setVisibility(View.GONE);
         holder.selectedFarmLL.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,7 @@ public class SelectedFarmAdapter2 extends RecyclerView.Adapter<SelectedFarmAdapt
 
     @Override
     public int getItemCount() {
-        return AllList.size();
+        return AddedList.size();
     }
 
 
