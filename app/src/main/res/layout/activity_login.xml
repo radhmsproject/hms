@@ -14,7 +14,8 @@
         android:layout_width="150sp"
         android:layout_height="150sp"
         android:layout_marginBottom="0dp"
-        app:srcCompat="@drawable/login_logo" />
+        android:background="@drawable/login_logo"
+        />
 
     <TextView
         android:id="@+id/text_view_id"
