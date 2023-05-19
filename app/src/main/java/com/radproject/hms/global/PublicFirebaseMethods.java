@@ -45,8 +45,7 @@ public class PublicFirebaseMethods {
                                 int documentCount = queryDocumentSnapshots.size();
 
                                 // Generate the next cultivation plan ID using the user ID and the count
-                                cultivationPlanId = farmerUserId + "_cul" + (documentCount + 1);
-
+                                cultivationPlanId = "Cul" + (documentCount + 1)+"_"+farmerUserId;
                                 // Handle success
                                 Toast.makeText(context, "Generated cultivation plan ID: " + cultivationPlanId, Toast.LENGTH_SHORT).show();
                             }
