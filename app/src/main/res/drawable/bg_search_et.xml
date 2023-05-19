@@ -3,7 +3,9 @@
         <layer-list>
             <!-- Shadow -->
             <!-- Additional background -->
+
             <item android:drawable="@drawable/bg_edit_text" />
+
             <!-- Dropdown arrow icon -->
             <item>
                 <shape android:shape="rectangle">
