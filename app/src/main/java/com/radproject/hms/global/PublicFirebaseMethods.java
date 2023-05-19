@@ -103,4 +103,26 @@ public class PublicFirebaseMethods {
         return cultivationList;
     }
 
+    public static ArrayList<CropModel> getAllCrops() {
+        CollectionReference cropsRef = db.collection("cultivation_crops");
+
+        ArrayList<CropModel> cropsList = new ArrayList<>();
+
+        cropsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        CropModel cropModel = document.toObject(CropModel.class);
+                        cropsList.add(cropModel);
+
+                    }
+                } else {
+                    Log.e("Firestore", "Error getting crops: " + task.getException());
+                }
+            }
+        });
+        return cropsList;
+    }
+
 }

@@ -3,11 +3,11 @@ package com.radproject.hms;
 import static android.content.ContentValues.TAG;
 
 import static com.radproject.hms.global.GlobalMethods.getALlFarmList;
-import static com.radproject.hms.global.GlobalMethods.getAllCrops;
 import static com.radproject.hms.global.GlobalMethods.listenForUserChanges;
 import static com.radproject.hms.global.GlobalMethods.redirectToLogin;
 import static com.radproject.hms.global.GlobalVariables.mAuth;
 import static com.radproject.hms.global.GlobalVariables.uid;
+import static com.radproject.hms.global.PublicFirebaseMethods.getAllCrops;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

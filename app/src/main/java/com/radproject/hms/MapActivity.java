@@ -1,6 +1,6 @@
 package com.radproject.hms;
 
-import static com.radproject.hms.global.GlobalMethods.getAllCrops;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
