@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalMethods;
 import com.radproject.hms.global.GlobalVariables;
+import com.radproject.hms.global.PublicFirebaseMethods;
 import com.radproject.hms.listAdapters.SelectedFarmAdapter;
 import com.radproject.hms.listAdapters.Suggestions.AutoFarmSuggestAdapter;
 import com.radproject.hms.models.CropModel;
@@ -43,7 +44,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
     private RecyclerView costingItemsRecyclerView;
     private TextView startDateTextView;
     private ImageButton startDateButton;
-    private TextView endDateTextView;
+    private TextView endDateTextView, cul1_Cul_ID_TV;
     private ImageButton endDateButton;
     private EditText planNameEditText;
     private Spinner statusSpinner;
@@ -118,6 +119,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
 
     private void initViews() {
         backButton = findViewById(R.id.cul1_back_btn);
+        cul1_Cul_ID_TV = findViewById(R.id.cul1_Cul_ID_TV);
         navbarTextView = findViewById(R.id.cul1_navbar_TV);
         cul1_Crop_Spinner = findViewById(R.id.cul1_Crop_Spinner);
         farmAutoCompleteTextView = findViewById(R.id.farm_auto_complete_text_view);
@@ -132,6 +134,10 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         createPlanButton = findViewById(R.id.cul1_add_btn);
 
         cultivationPlanModel = new CultivationPlanModel();
+
+        String Cultivation = PublicFirebaseMethods.generateCultivationPlanId(this);
+        cul1_Cul_ID_TV.setText(Cultivation + "");
+
         initClicks();
         farmSuggestions();
     }
@@ -200,7 +206,6 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
                     Log.e(TAG, "onClick: " + cropModel.getCrop_number());
                     Log.e(TAG, "onClick: " + statusSpinner.getSelectedItem().toString());
                 }
-
                 cultivationPlanModel.setCultivation_ID("CUL1");
                 cultivationPlanModel.setCultivation_CROP_ID(cropModel.getCrop_number() + "");
                 cultivationPlanModel.setCultivation_Plan_name(planNameEditText.getText().toString());
