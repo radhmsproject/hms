@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
+            android:name=".subActivities.AddActivityCustomDialog"
+            android:exported="false"
+            android:theme="@style/TransparentTheme" />
+        <activity
             android:name=".subActivities.ActivityPlansActivity"
             android:exported="false" />
         <activity

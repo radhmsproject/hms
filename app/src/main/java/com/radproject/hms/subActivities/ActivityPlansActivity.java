@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalVariables;
-import com.radproject.hms.listAdapters.SelectedFarmAdapter;
 import com.radproject.hms.listAdapters.SelectedFarmAdapter2;
 import com.radproject.hms.models.CultivationPlanModel;
 import com.radproject.hms.models.FarmModel;
@@ -127,8 +126,14 @@ public class ActivityPlansActivity extends AppCompatActivity {
         addActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle add activity button click
-                // Add your code here
+                Bundle bundle = new Bundle();
+                bundle.putString("example_key", "example_value");
+
+                AddActivityCustomDialog customDialog
+                        = new AddActivityCustomDialog(ActivityPlansActivity.this
+                        , bundle
+                ); // Replace with your activity class name                customDialog.show();
+                customDialog.show();
             }
         });
     }
