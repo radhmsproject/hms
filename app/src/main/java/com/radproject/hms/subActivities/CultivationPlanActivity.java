@@ -2,18 +2,13 @@ package com.radproject.hms.subActivities;
 
 import static android.content.ContentValues.TAG;
 
-import static com.radproject.hms.global.GlobalMethods.getALlFarmList;
-import static com.radproject.hms.global.GlobalMethods.getAllCrops;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,17 +24,17 @@ import android.widget.TextView;
 
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalMethods;
+import com.radproject.hms.global.GlobalVariables;
 import com.radproject.hms.listAdapters.Suggestions.AutoFarmSuggestAdapter;
 import com.radproject.hms.models.CropModel;
 import com.radproject.hms.models.FarmModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CultivationPlanActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private ImageButton backButton;
     private TextView navbarTextView;
-    private Spinner cropSpinner;
+    private Spinner cul1_Crop_Spinner;
     private AutoCompleteTextView farmAutoCompleteTextView;
     private RecyclerView costingItemsRecyclerView;
     private TextView startDateTextView;
@@ -62,8 +57,6 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         initCropSpinner();
         initStatusSpinner();
 
-        initClicks();
-
 
     }
 
@@ -76,17 +69,18 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         statusSpinner.setAdapter(statusAdapter);
     }
 
-    private void initCropSpinner() {
-        ArrayList<CropModel> crop_list = getAllCrops();
 
+    private void initCropSpinner() {
+
+        Log.e(TAG, "initCropSpinner: " + GlobalVariables.crop_list);
         // Create an adapter for the spinner
-        ArrayAdapter<CropModel> adapter = new ArrayAdapter<CropModel>(this, android.R.layout.simple_spinner_item, crop_list) {
+        ArrayAdapter<CropModel> adapter = new ArrayAdapter<CropModel>(this, android.R.layout.simple_spinner_item, GlobalVariables.crop_list) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
                 CropModel crop = getItem(position);
                 if (crop != null) {
-                    textView.setText(crop.getCrop_name());
+                    textView.setText(crop.getCrop_name() + " - " + crop.getCrop_number());
                 }
                 return textView;
             }
@@ -100,21 +94,27 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
                 }
                 return textView;
             }
+
+            @Override
+            public CropModel getItem(int position) {
+                return super.getItem(position);
+            }
         };
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Set the adapter to the cropSpinner
-        cropSpinner.setAdapter(adapter);
-
+        cul1_Crop_Spinner.setAdapter(adapter);
 
     }
 
     private AutoFarmSuggestAdapter autoFarmSuggestAdapter;
+    ArrayList<FarmModel> AllFarm = GlobalVariables.get_farmList;
+    ArrayList<FarmModel> Filter = new ArrayList<>();
 
     private void initViews() {
         backButton = findViewById(R.id.cul1_back_btn);
         navbarTextView = findViewById(R.id.cul1_navbar_TV);
-        cropSpinner = findViewById(R.id.cul1_Crop_Spinner);
+        cul1_Crop_Spinner = findViewById(R.id.cul1_Crop_Spinner);
         farmAutoCompleteTextView = findViewById(R.id.farm_auto_complete_text_view);
         costingItemsRecyclerView = findViewById(R.id.costing_items_list_RV);
         startDateTextView = findViewById(R.id.start_date_tv);
@@ -126,11 +126,20 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         createPlanButton = findViewById(R.id.cul1_add_btn);
 
 
-        farmAutoCompleteTextView = findViewById(R.id.farm_auto_complete_text_view);
-        farmAutoCompleteTextView.setThreshold(1); // Set the minimum number of characters to trigger filtering
-        autoFarmSuggestAdapter = new AutoFarmSuggestAdapter(this,  getALlFarmList());
-        farmAutoCompleteTextView.setAdapter(autoFarmSuggestAdapter);
+        initClicks();
+        farmSuggestions();
+    }
 
+    private void farmSuggestions() {
+        updateAdapter(AllFarm);
+    }
+
+    public void updateAdapter(ArrayList<FarmModel> AllFarm) {
+        AutoFarmSuggestAdapter adapter = new AutoFarmSuggestAdapter(this, AllFarm);
+        adapter.setNotifyOnChange(false);
+        farmAutoCompleteTextView.setAdapter(adapter);
+        farmAutoCompleteTextView.setTextColor(Color.RED);
+        adapter.notifyDataSetChanged();
     }
 
     private void initClicks() {
@@ -154,57 +163,21 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
                 showDatePickerDialog();
             }
         });
-        cropSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        farmAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CropModel selectedCrop = (CropModel) parent.getItemAtPosition(position);
-                // Handle the selected crop
-                cropSpinner.setSelection(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle the case when nothing is selected
-                Log.e(TAG, "onNothingSelected: ");
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e(TAG, "onItemClick: ");
+                FarmModel farmModel = (FarmModel) parent.getItemAtPosition(position);
+                if (!Filter.contains(farmModel)) {
+                    Filter.add(farmModel);
+                    AllFarm.remove(farmModel);
+                    updateAdapter(AllFarm);
+                }
+                farmAutoCompleteTextView.setText("");
             }
         });
-
-        farmAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Not needed for your case, but required by the TextWatcher interface
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterFarmData(s.toString());
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // Not needed for your case, but required by the TextWatcher interface
-            }
-        });
-
     }
 
-    private void filterFarmData(String query) {
-        List<FarmModel> filteredList = getFilteredFarmData(query);
-
-
-    }
-
-    private List<FarmModel> getFilteredFarmData(String query) {
-        List<FarmModel> filteredList = new ArrayList<>();
-        for (FarmModel farm : getALlFarmList()) {
-            if (farm.getName().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(farm);
-                Log.e(TAG, "getFilteredFarmData: " + farm);
-            }
-        }
-        return filteredList;
-    }
 
     private boolean isStartDate;
 

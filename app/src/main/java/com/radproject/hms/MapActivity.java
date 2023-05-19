@@ -1,5 +1,7 @@
 package com.radproject.hms;
 
+import static com.radproject.hms.global.GlobalMethods.getAllCrops;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -22,6 +24,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.radproject.hms.global.GlobalVariables;
+import com.radproject.hms.models.CropModel;
+
+import java.util.ArrayList;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -64,11 +70,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         getCurrentLocation();
-
 
         // Set up a listener to detect when the user clicks on the map
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {

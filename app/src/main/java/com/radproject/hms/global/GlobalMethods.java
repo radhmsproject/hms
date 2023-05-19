@@ -117,6 +117,7 @@ public class GlobalMethods {
 
     public interface LocationCallback {
         void onLocationFound(LatLng latLng);
+
         void onLocationNotFound();
     }
 
@@ -177,6 +178,7 @@ public class GlobalMethods {
 
         return selectedImage;
     }
+
     public static class DatePickerFragment extends DialogFragment {
         String date = "";
         private String TAG = "DatePickerFragment";
@@ -219,6 +221,7 @@ public class GlobalMethods {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         CropModel cropModel = document.toObject(CropModel.class);
                         cropsList.add(cropModel);
+
                     }
                 } else {
                     Log.e("Firestore", "Error getting crops: " + task.getException());
@@ -228,8 +231,8 @@ public class GlobalMethods {
         return cropsList;
     }
 
-    public static List<FarmModel> getALlFarmList() {
-        List<FarmModel> farmList = new ArrayList<>();
+    public static ArrayList<FarmModel> getALlFarmList() {
+        ArrayList<FarmModel> farmList = new ArrayList<>();
         // Initialize list of farms
         db.collection("Farmer").document(mAuth.getUid()).collection("Farms")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
