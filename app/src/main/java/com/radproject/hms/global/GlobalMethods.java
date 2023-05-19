@@ -4,11 +4,13 @@ import static android.content.ContentValues.TAG;
 
 import static com.radproject.hms.global.GlobalVariables.db;
 import static com.radproject.hms.global.GlobalVariables.mAuth;
+import static com.radproject.hms.global.GlobalVariables.uid;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -30,6 +32,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +47,7 @@ import com.radproject.hms.LoginActivity;
 import com.radproject.hms.MainActivity;
 import com.radproject.hms.RegisterActivity;
 import com.radproject.hms.models.CropModel;
+import com.radproject.hms.models.CultivationPlanModel;
 import com.radproject.hms.models.FarmModel;
 import com.radproject.hms.models.UserModel;
 
@@ -251,6 +255,31 @@ public class GlobalMethods {
                 });
 
         return farmList;
+    }
+
+
+    public static void AddCultivationPlanDataToFirebase(CultivationPlanModel cultivationPlanModel, Context context) {
+        db.collection("Farmer")
+                .document(uid)
+                .collection("cultivation_plan")
+                .add(cultivationPlanModel)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        // Document added successfully
+                        String documentId = documentReference.getId();
+                        // Handle success
+                        Toast.makeText(context, "successfully Created !", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to add document
+                        // Handle failure
+                        Toast.makeText(context, "Fail ! " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 

@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
@@ -21,12 +22,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalMethods;
 import com.radproject.hms.global.GlobalVariables;
+import com.radproject.hms.listAdapters.SelectedFarmAdapter;
 import com.radproject.hms.listAdapters.Suggestions.AutoFarmSuggestAdapter;
 import com.radproject.hms.models.CropModel;
+import com.radproject.hms.models.CultivationPlanModel;
 import com.radproject.hms.models.FarmModel;
 
 import java.util.ArrayList;
@@ -44,6 +48,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
     private EditText planNameEditText;
     private Spinner statusSpinner;
     private Button createPlanButton;
+    CultivationPlanModel cultivationPlanModel = new CultivationPlanModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,13 +114,14 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
 
     private AutoFarmSuggestAdapter autoFarmSuggestAdapter;
     ArrayList<FarmModel> AllFarm = GlobalVariables.get_farmList;
-    ArrayList<FarmModel> Filter = new ArrayList<>();
+    ArrayList<FarmModel> addedFarms = new ArrayList<>();
 
     private void initViews() {
         backButton = findViewById(R.id.cul1_back_btn);
         navbarTextView = findViewById(R.id.cul1_navbar_TV);
         cul1_Crop_Spinner = findViewById(R.id.cul1_Crop_Spinner);
         farmAutoCompleteTextView = findViewById(R.id.farm_auto_complete_text_view);
+        farmAutoCompleteTextView.setThreshold(1);
         costingItemsRecyclerView = findViewById(R.id.costing_items_list_RV);
         startDateTextView = findViewById(R.id.start_date_tv);
         startDateButton = findViewById(R.id.start_select_calender_IB);
@@ -125,22 +131,15 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
         statusSpinner = findViewById(R.id.cul1_status);
         createPlanButton = findViewById(R.id.cul1_add_btn);
 
-
+        cultivationPlanModel = new CultivationPlanModel();
         initClicks();
         farmSuggestions();
     }
 
     private void farmSuggestions() {
-        updateAdapter(AllFarm);
+        updateAdapter();
     }
 
-    public void updateAdapter(ArrayList<FarmModel> AllFarm) {
-        AutoFarmSuggestAdapter adapter = new AutoFarmSuggestAdapter(this, AllFarm);
-        adapter.setNotifyOnChange(false);
-        farmAutoCompleteTextView.setAdapter(adapter);
-        farmAutoCompleteTextView.setTextColor(Color.RED);
-        adapter.notifyDataSetChanged();
-    }
 
     private void initClicks() {
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -168,16 +167,70 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.e(TAG, "onItemClick: ");
                 FarmModel farmModel = (FarmModel) parent.getItemAtPosition(position);
-                if (!Filter.contains(farmModel)) {
-                    Filter.add(farmModel);
+                if (!addedFarms.contains(farmModel)) {
+                    addedFarms.add(farmModel);
                     AllFarm.remove(farmModel);
-                    updateAdapter(AllFarm);
+
+
+                } else {
+                    Toast.makeText(CultivationPlanActivity.this, "Already Added", Toast.LENGTH_SHORT).show();
+
                 }
+                //   updateAdapter();
+                setupTaggedListRV(addedFarms, AllFarm);
                 farmAutoCompleteTextView.setText("");
+            }
+        });
+
+        createPlanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                CropModel cropModel = (CropModel) cul1_Crop_Spinner.getSelectedItem();
+                ArrayList<String> FarmList = new ArrayList<>();
+                for (FarmModel farm : addedFarms) {
+                    FarmList.add(farm.getFarmId());
+                }
+
+                startDateTextView.getText();
+                endDateTextView.getText();
+                planNameEditText.getText();
+                statusSpinner.getSelectedItem().toString();
+                if (cropModel != null) {
+                    Log.e(TAG, "onClick: " + cropModel.getCrop_number());
+                    Log.e(TAG, "onClick: " + statusSpinner.getSelectedItem().toString());
+                }
+
+                cultivationPlanModel.setCultivation_ID("CUL1");
+                cultivationPlanModel.setCultivation_CROP_ID(cropModel.getCrop_number() + "");
+                cultivationPlanModel.setCultivation_Plan_name(planNameEditText.getText().toString());
+                cultivationPlanModel.setCultivation_Farm_ID_list(FarmList);
+                cultivationPlanModel.setCultivation_Start_date(startDateTextView.getText().toString());
+                cultivationPlanModel.setCultivation_End_date(endDateTextView.getText().toString());
+                cultivationPlanModel.setStatus(statusSpinner.getSelectedItem().toString());
+                GlobalMethods.AddCultivationPlanDataToFirebase(cultivationPlanModel, CultivationPlanActivity.this);
+
             }
         });
     }
 
+    AutoFarmSuggestAdapter adapter;
+
+    public void updateAdapter() {
+        adapter = new AutoFarmSuggestAdapter(this, AllFarm);
+        adapter.setNotifyOnChange(false);
+        farmAutoCompleteTextView.setAdapter(adapter);
+        farmAutoCompleteTextView.setTextColor(Color.RED);
+        adapter.notifyDataSetChanged();
+    }
+
+    SelectedFarmAdapter selectedFarmAdapter;
+
+    private void setupTaggedListRV(ArrayList<FarmModel> selectedFarms, ArrayList<FarmModel> AllFarm) {
+        selectedFarmAdapter = new SelectedFarmAdapter(selectedFarms, AllFarm, this); // Create the adapter
+        costingItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        costingItemsRecyclerView.setAdapter(selectedFarmAdapter);
+    }
 
     private boolean isStartDate;
 

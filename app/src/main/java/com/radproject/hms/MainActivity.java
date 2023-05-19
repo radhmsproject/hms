@@ -7,6 +7,7 @@ import static com.radproject.hms.global.GlobalMethods.getAllCrops;
 import static com.radproject.hms.global.GlobalMethods.listenForUserChanges;
 import static com.radproject.hms.global.GlobalMethods.redirectToLogin;
 import static com.radproject.hms.global.GlobalVariables.mAuth;
+import static com.radproject.hms.global.GlobalVariables.uid;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getUid();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         getData();
         // Initialize Bottom Navigation View
