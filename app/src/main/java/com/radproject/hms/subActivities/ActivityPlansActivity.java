@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -59,6 +61,10 @@ public class ActivityPlansActivity extends AppCompatActivity {
         startDateButton.setClickable(false);
         endDateButton.setClickable(false);
 
+
+        setUpStatusDropdown();
+
+
         // Retrieve the cultivationPlan bundle
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -80,7 +86,6 @@ public class ActivityPlansActivity extends AppCompatActivity {
                 ArrayList<FarmModel> AllFarm = GlobalVariables.all_farm_list;
                 ArrayList<FarmModel> addedFarms = new ArrayList<>();
                 ArrayList<String> farm_id_list = cultivationPlan.getCultivation_Farm_ID_list();
-
                 // Iterate over each element in the farm_id_list using foreach loop
 
                 // Iterate over each farm ID in farm_id_list
@@ -126,8 +131,6 @@ public class ActivityPlansActivity extends AppCompatActivity {
         addActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("example_key", "example_value");
 
                 AddActivityCustomDialog customDialog
                         = new AddActivityCustomDialog(ActivityPlansActivity.this
@@ -137,4 +140,27 @@ public class ActivityPlansActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setUpStatusDropdown() {
+        // setup spinner,
+        String[] statusArray = {"Complete", "Pending", "Started"};
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusArray);
+        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(statusAdapter);
+        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedStatus = (String) parent.getItemAtPosition(position);
+                // Perform actions based on the selected status
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle the case where nothing is selected (if needed)
+            }
+        });
+
+    }
+
+
 }
