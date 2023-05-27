@@ -4,11 +4,19 @@ import java.util.ArrayList;
 
 public class ActivityModel {
 
-    String activity_doc_id;
+    String farm_id;
     String cultivation_id;
     String activity_name;
     String planned_date;
     ArrayList<CostModel> costList;
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
 
     public String getCultivation_id() {
         return cultivation_id;
@@ -40,13 +48,5 @@ public class ActivityModel {
 
     public void setCostList(ArrayList<CostModel> costList) {
         this.costList = costList;
-    }
-
-    public String getActivity_doc_id() {
-        return activity_doc_id;
-    }
-
-    public void setActivity_doc_id(String activity_doc_id) {
-        this.activity_doc_id = activity_doc_id;
     }
 }
