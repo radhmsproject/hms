@@ -2,6 +2,10 @@ package com.radproject.hms.subActivities;
 
 import static android.content.ContentValues.TAG;
 
+import static com.radproject.hms.global.GlobalVariables.db;
+import static com.radproject.hms.global.GlobalVariables.uid;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,12 +28,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalMethods;
 import com.radproject.hms.global.GlobalVariables;
 import com.radproject.hms.global.PublicFirebaseMethods;
 import com.radproject.hms.listAdapters.SelectedFarmAdapter;
 import com.radproject.hms.listAdapters.Suggestions.AutoFarmSuggestAdapter;
+import com.radproject.hms.models.ActivityModel;
 import com.radproject.hms.models.CropModel;
 import com.radproject.hms.models.CultivationPlanModel;
 import com.radproject.hms.models.FarmModel;
@@ -254,4 +263,7 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
             Log.e(TAG, "end: " + year + "-" + _month + "-" + _day);
         }
     }
+
+
+
 }

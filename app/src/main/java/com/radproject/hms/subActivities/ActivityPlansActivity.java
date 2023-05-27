@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalVariables;
+import com.radproject.hms.listAdapters.ActivityListAdapter;
 import com.radproject.hms.listAdapters.SelectedFarmAdapter2;
 import com.radproject.hms.models.ActivityModel;
 import com.radproject.hms.models.CultivationPlanModel;
@@ -51,6 +53,7 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
     private Button addActivityButton;
     CultivationPlanModel cultivationPlan;
     private String cul_doc_id;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,7 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
 
 
         // Retrieve the cultivationPlan bundle
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         if (bundle != null) {
             cultivationPlan = (CultivationPlanModel) bundle.getSerializable("cultivationPlan");
 
@@ -156,7 +159,7 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
 
 
     // Getting Cultivation Document ID
-    private void getCultivationDocumentID(){
+    private void getCultivationDocumentID() {
         Query Q = db.collection("Farmer")
                 .document(uid)
                 .collection("cultivation_plan")
@@ -168,6 +171,8 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
                 for (QueryDocumentSnapshot document : querySnapshot) {
                     // Access the document ID
                     cul_doc_id = document.getId();
+                    bundle.putString("documentId", cul_doc_id);
+                    Log.e(TAG, "onSuccess: " + cul_doc_id);
                     getAllActivityData(cul_doc_id);
                     break;
                 }
@@ -202,8 +207,17 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
     @Override
     protected void onResume() {
         super.onResume();
-
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getAllActivityData(cul_doc_id);
+            }
+        }, 500);
     }
+
+
+    ArrayList<ActivityModel> activityModels = new ArrayList<>();
 
     public void getAllActivityData(String cul_documentId) {
         db.collection("Farmer")
@@ -219,9 +233,12 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             // Access the data in each document
                             String documentId = documentSnapshot.getId();
+
                             ActivityModel activityModel = documentSnapshot.toObject(ActivityModel.class);
                             // Perform any further operations with the retrieved data
+                            activityModels.add(activityModel);
                         }
+                        RefreshActivityListRecyclerView();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -236,4 +253,12 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
+
+    private void RefreshActivityListRecyclerView() {
+        activityListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //   farmItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ActivityListAdapter farmAdapter = new ActivityListAdapter(activityModels);
+        activityListRecyclerView.setAdapter(farmAdapter);
+    }
+
 }

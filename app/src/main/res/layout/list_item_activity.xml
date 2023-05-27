@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item_activity_LL"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="3sp"
+    android:background="@color/colorSmokeWhite"
+    android:orientation="horizontal"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="5dp">
+
+
+    <TextView
+        android:id="@+id/list_item_indexTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5sp"
+        android:text="01"
+        android:textSize="12sp" />
+
+
+    <TextView
+        android:id="@+id/list_item_activity_nameTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5sp"
+        android:layout_weight="1"
+        android:text="Farm Name"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/list_item_activity_date_TV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5sp"
+        android:layout_weight="1"
+        android:text="Farm size"
+        android:textSize="12sp" />
+
+
+    <ImageView
+        android:id="@+id/list_item_delete_RV_IV"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_remove"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -273,12 +273,6 @@
                 android:layout_marginHorizontal="15dp"
                 android:gravity="center"
                 android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/activity_list_RV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
                 <Button
                     android:id="@+id/add_an_activity_btn"
                     android:layout_width="wrap_content"
@@ -286,6 +280,12 @@
                     android:layout_gravity="center"
                     android:layout_margin="25dp"
                     android:text="Add Activity Plan" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/activity_list_RV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
 
             </LinearLayout>
 

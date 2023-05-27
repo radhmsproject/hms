@@ -71,6 +71,7 @@ public class AddActivityCustomDialog extends Dialog {
         initSActivitySpinner();
         // Retrieve the CultivationPlanModel from the dataBundle
         if (dataBundle != null) {
+            Cul_DocumentId = dataBundle.getString("documentId");
             cultivationPlan = (CultivationPlanModel) dataBundle.getSerializable("cultivationPlan");
             context = (Context) dataBundle.getSerializable("context");
             ArrayList<String> farm_id_list = cultivationPlan.getCultivation_Farm_ID_list();
@@ -86,8 +87,6 @@ public class AddActivityCustomDialog extends Dialog {
             }
             initFarmNameSpinner(filteredFarmNames);
         }
-
-
 
 
     }
