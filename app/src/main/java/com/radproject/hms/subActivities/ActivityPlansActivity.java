@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -169,6 +168,7 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
                 for (QueryDocumentSnapshot document : querySnapshot) {
                     // Access the document ID
                     cul_doc_id = document.getId();
+                    getAllActivityData(cul_doc_id);
                     break;
                 }
                 Log.e(TAG, "TASK COMPLETED");
@@ -199,6 +199,38 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    public void getAllActivityData(String cul_documentId) {
+        db.collection("Farmer")
+                .document(uid)
+                .collection("cultivation_plan")
+                .document(cul_documentId)
+                .collection("cost_document")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        // Process the retrieved documents
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            // Access the data in each document
+                            String documentId = documentSnapshot.getId();
+                            ActivityModel activityModel = documentSnapshot.toObject(ActivityModel.class);
+                            // Perform any further operations with the retrieved data
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle any errors that occurred during the retrieval
+                    }
+                });
+    }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
