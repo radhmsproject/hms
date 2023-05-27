@@ -55,19 +55,14 @@ public class CultivationPlanActivity extends AppCompatActivity implements DatePi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cultivation_plan);
-
         // Call the showDatePickerDialog() method wherever you want to show the date picker
-
-
         initViews();
         initCropSpinner();
         initStatusSpinner();
-
-
     }
 
     private void initStatusSpinner() {
-        String[] statusItems = {"Complete", "Active", "Pending"};
+        String[] statusItems = {"Pending","Active"};
         // Create an adapter for the spinner
         ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusItems);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
