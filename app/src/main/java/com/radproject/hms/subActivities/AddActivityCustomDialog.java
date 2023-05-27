@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalVariables;
@@ -77,16 +78,40 @@ public class AddActivityCustomDialog extends Dialog {
         addFarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 ActivityModel activityModel = new ActivityModel();
-                activityModel.setCultivation_id(cultivationPlan.getCultivation_ID());
-                activityModel.setActivity_name(activityNameSpinner.getSelectedItem().toString());
-                activityModel.setFarm_id(farmID);
-                activityModel.setPlanned_date(startDateTextView.getText().toString());
-                dismiss();
-
+                // Validate cultivation ID
+                if (cultivationPlan != null && cultivationPlan.getCultivation_ID() != null) {
+                    activityModel.setCultivation_id(cultivationPlan.getCultivation_ID());
+                } else {
+                    Toast.makeText(getContext(), "Cultivation not found", Toast.LENGTH_SHORT).show();
+                    return; // Exit the onClick() method to prevent dismissing the dialog
+                }
+                // Validate activity name
+                String selectedActivityName = activityNameSpinner.getSelectedItem().toString();
+                if (selectedActivityName != null && !selectedActivityName.isEmpty()) {
+                    activityModel.setActivity_name(selectedActivityName);
+                } else {
+                    Toast.makeText(getContext(), "Please select an activity", Toast.LENGTH_SHORT).show();
+                    return; // Exit the onClick() method to prevent dismissing the dialog
+                }
+                // Validate farm ID
+                if (farmID != null && !farmID.isEmpty()) {
+                    activityModel.setFarm_id(farmID);
+                } else {
+                    Toast.makeText(getContext(), "Please select a farm", Toast.LENGTH_SHORT).show();
+                    return; // Exit the onClick() method to prevent dismissing the dialog
+                }
+                // Validate planned date
+                String plannedDate = startDateTextView.getText().toString();
+                if (plannedDate != null && !plannedDate.isEmpty()) {
+                    activityModel.setPlanned_date(plannedDate);
+                } else {
+                    Toast.makeText(getContext(), "Date Not Selected", Toast.LENGTH_SHORT).show();
+                    return; // Exit the onClick() method to prevent dismissing the dialog
+                }
+                // All data is valid, proceed with further actions
+                dismiss(); // Dismiss the dialog
+                // Add the activityModel to your desired logic or data structure
             }
         });
 
