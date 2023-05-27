@@ -85,6 +85,8 @@ public class CultivationPlanFragment extends Fragment {
 
     private static CultivationPlanModel[] cultivationList = new CultivationPlanModel[0];
 
+
+    // Cultivation Plan List - according to current farmer.
     public static void getAllCultivationForCurrentFarmer() {
         db.collection("Farmer").document(uid).collection("cultivation_plan").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
