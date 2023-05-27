@@ -7,18 +7,22 @@ import static com.radproject.hms.global.GlobalVariables.uid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -68,12 +72,12 @@ public class CultivationPlanFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-
         // Set up recycler view
         cultivationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         cultivationAdapter = new CultivationPlanAdapter(cultivationList);
         cultivationRecyclerView.setAdapter(cultivationAdapter);
         getAllCultivationForCurrentFarmer();
+        refreshRecycler();
 
     }
 
@@ -88,15 +92,11 @@ public class CultivationPlanFragment extends Fragment {
 
     // Cultivation Plan List - according to current farmer.
     public static void getAllCultivationForCurrentFarmer() {
-        db.collection("Farmer").document(uid).collection("cultivation_plan").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("Farmer").document(uid).collection("cultivation_plan").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error getting farms: " + e.getMessage());
-                    return;
-                }
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<CultivationPlanModel> farmList = new ArrayList<>();
-                for (QueryDocumentSnapshot documentSnapshot : value) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     CultivationPlanModel cultivationPlanModel = documentSnapshot.toObject(CultivationPlanModel.class);
                     farmList.add(cultivationPlanModel);
                 }
@@ -104,7 +104,22 @@ public class CultivationPlanFragment extends Fragment {
                 Log.e(TAG, "No of Farms - " + cultivationList.length);
                 cultivationAdapter.notifyDataSetChanged(); // Add this line to refresh the RecyclerView
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "Error getting farms: " + e.getMessage());
+            }
         });
+    }
+
+    private void refreshRecycler(){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                cultivationRecyclerView.setAdapter(cultivationAdapter);
+            }
+        }, 1000);
     }
 
 }
