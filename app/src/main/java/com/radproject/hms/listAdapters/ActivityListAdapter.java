@@ -2,6 +2,8 @@ package com.radproject.hms.listAdapters;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.radproject.hms.R;
 import com.radproject.hms.models.ActivityModel;
+import com.radproject.hms.subActivities.CostingActivity;
 
 import java.util.ArrayList;
 
@@ -23,11 +26,13 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
     //    private ArrayList<FarmModel> AllList;
     private ArrayList<ActivityModel> activityList;
     private int clickedPosition = -1;
+    private Bundle bundle;
 
 //    ActivityPlansActivity context;
 
-    public ActivityListAdapter(ArrayList<ActivityModel> activityModels) {
+    public ActivityListAdapter(ArrayList<ActivityModel> activityModels, Bundle bundle) {
         this.activityList = activityModels;
+        this.bundle = bundle;
         Log.e("TAG", "SelectedFarmAdapter2: " + activityModels.size());
     }
 
@@ -45,11 +50,17 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
         Log.e(TAG, "RV ADAPTER: " + position);
         holder.bind(activityModel);
 
-        holder.listItemLayout.setOnClickListener(new View.OnClickListener() {
+        holder.list_item_edit_costImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
+                bundle.putSerializable("activity_model", activityModel); // Replace "activityId" with the appropriate key and value
+
+                // Start the CostingActivity and pass the bundle
+                Intent intent = new Intent(v.getContext(), CostingActivity.class);
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
             }
         });
     }
@@ -65,7 +76,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
         private TextView indexTextView;
         private TextView activityNameTextView;
         private TextView activityDateTextView;
-        private ImageView deleteImageView;
+        private ImageView list_item_edit_costImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,7 +85,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
             indexTextView = itemView.findViewById(R.id.list_item_indexTV);
             activityNameTextView = itemView.findViewById(R.id.list_item_activity_nameTV);
             activityDateTextView = itemView.findViewById(R.id.list_item_activity_date_TV);
-            deleteImageView = itemView.findViewById(R.id.list_item_delete_RV_IV);
+            list_item_edit_costImageView = itemView.findViewById(R.id.list_item_edit_cost);
         }
 
         public void bind(ActivityModel activityModel) {

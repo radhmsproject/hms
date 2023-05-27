@@ -263,8 +263,6 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:paddingHorizontal="18dp">
-
-
             </LinearLayout>
 
             <LinearLayout

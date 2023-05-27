@@ -257,7 +257,7 @@ public class ActivityPlansActivity extends AppCompatActivity implements Serializ
     private void RefreshActivityListRecyclerView() {
         activityListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //   farmItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ActivityListAdapter farmAdapter = new ActivityListAdapter(activityModels);
+        ActivityListAdapter farmAdapter = new ActivityListAdapter(activityModels,bundle);
         activityListRecyclerView.setAdapter(farmAdapter);
     }
 

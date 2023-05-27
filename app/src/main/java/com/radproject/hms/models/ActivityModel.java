@@ -1,8 +1,9 @@
 package com.radproject.hms.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ActivityModel {
+public class ActivityModel implements Serializable {
 
     String farm_id;
     String cultivation_id;
