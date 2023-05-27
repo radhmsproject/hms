@@ -2,12 +2,14 @@ package com.radproject.hms.subActivities;
 
 import static android.content.ContentValues.TAG;
 
+import static com.radproject.hms.global.GlobalVariables.db;
+import static com.radproject.hms.global.GlobalVariables.uid;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,6 +18,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalVariables;
 import com.radproject.hms.models.ActivityModel;
@@ -27,6 +37,7 @@ import java.util.ArrayList;
 public class AddActivityCustomDialog extends Dialog {
 
     private Bundle dataBundle;
+    private static Dialog dialog;
 
     public AddActivityCustomDialog(Context context, Bundle dataBundle) {
         super(context);
@@ -38,15 +49,17 @@ public class AddActivityCustomDialog extends Dialog {
     private TextView startDateTextView;
     private ImageButton startDateSelectImageButton;
     private Button addFarmButton;
-    CultivationPlanModel cultivationPlan = null;
+    static CultivationPlanModel cultivationPlan = null;
     String farmID;
     String farmName;
+    String Cul_DocumentId;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_activity); // Replace "your_layout_file" with the actual layout file name
-
+        dialog = this;
         // Initialize the variables
         activityNameSpinner = findViewById(R.id.Activity_NameSP);
         farmNameSpinner = findViewById(R.id.Farm_NameSP);
@@ -59,6 +72,7 @@ public class AddActivityCustomDialog extends Dialog {
         // Retrieve the CultivationPlanModel from the dataBundle
         if (dataBundle != null) {
             cultivationPlan = (CultivationPlanModel) dataBundle.getSerializable("cultivationPlan");
+            context = (Context) dataBundle.getSerializable("context");
             ArrayList<String> farm_id_list = cultivationPlan.getCultivation_Farm_ID_list();
             ArrayList<String> filteredFarmNames = new ArrayList<>();
             for (String farmId : farm_id_list) {
@@ -72,6 +86,10 @@ public class AddActivityCustomDialog extends Dialog {
             }
             initFarmNameSpinner(filteredFarmNames);
         }
+
+
+
+
     }
 
     private void initClicks() {
@@ -102,7 +120,7 @@ public class AddActivityCustomDialog extends Dialog {
                     return; // Exit the onClick() method to prevent dismissing the dialog
                 }
                 // Validate planned date
-                String plannedDate = startDateTextView.getText().toString();
+                String plannedDate = "2023-05-28"; //startDateTextView.getText().toString();
                 if (plannedDate != null && !plannedDate.isEmpty()) {
                     activityModel.setPlanned_date(plannedDate);
                 } else {
@@ -110,7 +128,9 @@ public class AddActivityCustomDialog extends Dialog {
                     return; // Exit the onClick() method to prevent dismissing the dialog
                 }
                 // All data is valid, proceed with further actions
-                dismiss(); // Dismiss the dialog
+
+                uploadActivityModel(activityModel, Cul_DocumentId, context);
+                //dismiss(); // Dismiss the dialog
                 // Add the activityModel to your desired logic or data structure
             }
         });
@@ -129,6 +149,30 @@ public class AddActivityCustomDialog extends Dialog {
 
             }
         });
+    }
+
+    public static void uploadActivityModel(ActivityModel activityModel, String cul_documentId, Context context) {
+        db.collection("Farmer")
+                .document(uid)
+                .collection("cultivation_plan")
+                .document(cul_documentId)
+                .collection("cost_document")
+                .add(activityModel)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(context, "Successfully Added", Toast.LENGTH_SHORT).show();
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss(); // Dismiss the dialog
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
