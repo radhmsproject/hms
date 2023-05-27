@@ -2,6 +2,10 @@ package com.radproject.hms.subActivities;
 
 import static android.content.ContentValues.TAG;
 
+import static com.radproject.hms.global.GlobalVariables.db;
+import static com.radproject.hms.global.GlobalVariables.uid;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,15 +21,22 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.radproject.hms.R;
 import com.radproject.hms.global.GlobalVariables;
 import com.radproject.hms.listAdapters.SelectedFarmAdapter2;
+import com.radproject.hms.models.ActivityModel;
 import com.radproject.hms.models.CultivationPlanModel;
 import com.radproject.hms.models.FarmModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ActivityPlansActivity extends AppCompatActivity {
+public class ActivityPlansActivity extends AppCompatActivity implements Serializable {
 
     private ImageButton backButton;
     private TextView navbarTextView;
@@ -39,6 +50,8 @@ public class ActivityPlansActivity extends AppCompatActivity {
     private ImageButton endDateButton;
     private RecyclerView activityListRecyclerView;
     private Button addActivityButton;
+    CultivationPlanModel cultivationPlan;
+    private String cul_doc_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +81,7 @@ public class ActivityPlansActivity extends AppCompatActivity {
         // Retrieve the cultivationPlan bundle
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            CultivationPlanModel cultivationPlan = (CultivationPlanModel) bundle.getSerializable("cultivationPlan");
+            cultivationPlan = (CultivationPlanModel) bundle.getSerializable("cultivationPlan");
 
             // Fill the components with data from cultivationPlan
             if (cultivationPlan != null) {
@@ -131,12 +144,36 @@ public class ActivityPlansActivity extends AppCompatActivity {
         addActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                AddActivityCustomDialog customDialog
-                        = new AddActivityCustomDialog(ActivityPlansActivity.this
-                        , bundle
-                ); // Replace with your activity class name                customDialog.show();
+                bundle.putSerializable("context", ActivityPlansActivity.this);
+                AddActivityCustomDialog customDialog = new AddActivityCustomDialog(ActivityPlansActivity.this, bundle);
+                // Replace with your activity class name                customDialog.show();
                 customDialog.show();
+            }
+        });
+
+
+        getCultivationDocumentID();
+    }
+
+
+    // Getting Cultivation Document ID
+    private void getCultivationDocumentID(){
+        Query Q = db.collection("Farmer")
+                .document(uid)
+                .collection("cultivation_plan")
+                .whereEqualTo("cultivation_ID", cultivationPlan.getCultivation_ID());
+        //      Log.e(TAG, "onCreate: " + name);
+        Q.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                for (QueryDocumentSnapshot document : querySnapshot) {
+                    // Access the document ID
+                    cul_doc_id = document.getId();
+                    break;
+                }
+                Log.e(TAG, "TASK COMPLETED");
+            } else {
+                Log.e("FirestoreExample", "Error getting documents: ", task.getException());
             }
         });
     }
@@ -163,4 +200,8 @@ public class ActivityPlansActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
 }
